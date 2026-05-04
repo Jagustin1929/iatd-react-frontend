@@ -2,38 +2,30 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
+const API = 'https://glowing-trout-q74jp9rpwj7pc4g7j-5999.app.github.dev';
+
 function App() {
   const [message, setMessage] = useState('');
   const [items, setItems] = useState([]);
   const [newItem, setNewItem] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:5999/')
-      .then(response => {
-        setMessage(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-      });
+    axios.get(`${API}/`)
+      .then(response => setMessage(response.data))
+      .catch(error => console.error('There was an error!', error));
 
-    axios.get('http://localhost:5999/items')
-      .then(response => {
-        setItems(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-      });
+    axios.get(`${API}/items`)
+      .then(response => setItems(response.data))
+      .catch(error => console.error('There was an error!', error));
   }, []);
 
   const addItem = () => {
-    axios.post('http://localhost:5999/items', { name: newItem })
+    axios.post(`${API}/items`, { name: newItem })
       .then(response => {
         setItems([...items, response.data.name]);
         setNewItem('');
       })
-      .catch(error => {
-        console.error('There was an error!', error);
-      });
+      .catch(error => console.error('There was an error!', error));
   };
 
   return (
